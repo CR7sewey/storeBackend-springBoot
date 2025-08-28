@@ -9,7 +9,7 @@ import java.util.List;
 // tb_user
 public class UserDTO implements Serializable {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String email;
     private String phone;
@@ -17,7 +17,7 @@ public class UserDTO implements Serializable {
     // One to Many
     private List<Order> orders = new ArrayList<>();
 
-    public UserDTO(Integer id, String name, String email, String phone) {
+    public UserDTO(Long id, String name, String email, String phone) {
         super();
         this.id = id;
         this.name = name;
@@ -25,10 +25,10 @@ public class UserDTO implements Serializable {
         this.phone = phone;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getName() {

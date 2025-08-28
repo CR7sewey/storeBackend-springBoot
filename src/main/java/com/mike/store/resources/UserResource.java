@@ -17,7 +17,7 @@ public class UserResource {
     @GetMapping
     public ResponseEntity<UserDTO> getUser() {
         var randomUser = new UserDTO(
-                1,
+                1L,
                 "",
                 "",
                 ""
