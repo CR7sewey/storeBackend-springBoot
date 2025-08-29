@@ -1,4 +1,4 @@
-package com.mike.store.DTO;
+package com.mike.store.entities.DTO;
 
 import com.mike.store.entities.Order;
 
