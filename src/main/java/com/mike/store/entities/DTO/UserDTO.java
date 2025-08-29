@@ -15,7 +15,7 @@ public class UserDTO implements Serializable {
     private String phone;
 
     // One to Many
-    private List<Order> orders = new ArrayList<>();
+    private List<OrderDTO> orders = new ArrayList<>();
 
     public UserDTO(Long id, String name, String email, String phone) {
         super();
@@ -50,10 +50,10 @@ public class UserDTO implements Serializable {
         this.phone = phone;
     }
 
-    public List<Order> getOrders() {
+    public List<OrderDTO> getOrders() {
         return orders;
     }
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<OrderDTO> orders) {
         this.orders = orders;
     }
 

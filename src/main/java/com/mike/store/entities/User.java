@@ -27,9 +27,9 @@ public class User implements Serializable {
 
 
     // One to Many
-    /*@JsonIgnore // lazy loading
+    @JsonIgnore // lazy loading
     @OneToMany(mappedBy = "client")
-    private List<Order> orders = new ArrayList<>();*/
+    private List<Order> orders = new ArrayList<>();
 
     public User() {
     }
@@ -75,9 +75,9 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    /*public List<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
-    }*/
+    }
 
     @Override
     public boolean equals(Object obj) {

@@ -1,48 +1,74 @@
 package com.mike.store.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.Date;
 
-public class Order {
+@Entity
+@Table(name = "tb_order")
+public class Order implements Serializable {
 
-    private Integer id;
-    private Date moment;
-    private OrderStatus status;
-    private User user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    private Instant moment;
+    @Column
+    private Integer status;
 
-    public Order(Integer id, Date moment, OrderStatus status, User user) {
+    @JsonIgnore
+    @ManyToOne // JPA transfromar em chaves estrangeiras no Banco de dados, relacionamneto entre Order e User
+    @JoinColumn(name = "client_id")
+    private User client;
+
+    public Order() {
+    }
+
+    public Order(Long id, Instant moment, OrderStatus status, User client) {
         super();
         this.id = id;
         this.moment = moment;
-        this.status = status;
-        this.user = user;
+        this.client = client;
+        setOrderStatus(status);
     }
 
-    public Integer getId() {
+
+
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public Date getMoment() {
+    public Instant getMoment() {
         return moment;
     }
-    public void setMoment(Date moment) {
+    public void setMoment(Instant moment) {
         this.moment = moment;
     }
 
-    public OrderStatus getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+
+    public User getClient() {
+        return client;
+    }
+    public void setClient(User user) {
+        this.client = user;
     }
 
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null) {
+            this.status = orderStatus.getValue();
+        }
+
     }
 
 
@@ -60,7 +86,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" + "id=" + id + ", moment=" + moment + '}';
+        return "Order{" + "id=" + id + ", moment=" + moment +  ", status=" + status + ", client=" + client + '}';
 
     }
 
