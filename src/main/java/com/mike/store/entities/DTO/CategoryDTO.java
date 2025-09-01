@@ -2,9 +2,10 @@ package com.mike.store.entities.DTO;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class CategoryDTO {
+public class CategoryDTO implements Serializable {
 
     private Long id;
     private String name;
