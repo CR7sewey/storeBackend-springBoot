@@ -1,15 +1,18 @@
 package com.mike.store.entities.DTO;
 
+import com.mike.store.entities.Product;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CategoryDTO implements Serializable {
 
     private Long id;
     private String name;
-
+    private List<Product> products = new ArrayList<>();
 
     public CategoryDTO() {}
 
@@ -29,6 +32,10 @@ public class CategoryDTO implements Serializable {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
 
