@@ -78,6 +78,10 @@ public class ProductDTO implements Serializable {
         return category;
     }
 
+    public void setCategory(Set<Category> category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
