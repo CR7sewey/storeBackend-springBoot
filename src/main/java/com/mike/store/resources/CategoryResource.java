@@ -24,18 +24,18 @@ public class CategoryResource {
 
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAll()
+    public ResponseEntity<List<Category>> getAll()
     {
         try {
             List<Category> categories = categoryService.getAll();
             List<CategoryDTO> categoryDTOS = new ArrayList<>();
-            for (Category category : categories) {
+            /*for (Category category : categories) {
                 CategoryDTO categoryDTO = new CategoryDTO();
                 categoryDTO.setId(category.getId());
                 categoryDTO.setName(category.getName());
                 categoryDTOS.add(categoryDTO);
-            }
-            return ResponseEntity.ok().body(categoryDTOS);
+            }*/
+            return ResponseEntity.ok().body(categories);
         }
         catch (Exception e)
         {
@@ -45,17 +45,18 @@ public class CategoryResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getById(@PathVariable Long id)
+    public ResponseEntity<Category> getById(@PathVariable Long id)
     {
-        CategoryDTO categoryDTO = null;
+        Category categoryDTO = null;
         try {
             var exists = categoryService.getById(id);
-            if (exists != null) {
+            /*if (exists != null) {
                 categoryDTO = new CategoryDTO(
                         exists.getId(),
                         exists.getName()
                 );
-            }
+            }*/
+            categoryDTO = exists;
 
         }
         catch (Exception ex) {

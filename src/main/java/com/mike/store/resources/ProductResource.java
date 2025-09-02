@@ -26,20 +26,21 @@ public class ProductResource {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> findAll()
+    public ResponseEntity<List<Product>> findAll()
     {
         try {
             List<Product> products = productService.getAll();
-            List<ProductDTO> productDTOS = new ArrayList<>();
+            List<Product> productDTOS = new ArrayList<>();
             for (Product p : products) {
-                ProductDTO pDTO = new ProductDTO();
+                Product pDTO = new Product();
                 pDTO.setId(p.getId());
                 pDTO.setName(p.getName());
                 pDTO.setPrice(p.getPrice());
                 pDTO.setDescription(p.getDescription());
                 pDTO.setImgUrl(p.getImgUrl());
                 pDTO.setCategory(p.getCategory());
-                productDTOS.add(pDTO);
+                //productDTOS.add(pDTO);
+                productDTOS.add(p);
             }
             return ResponseEntity.ok().body(productDTOS);
         }
@@ -50,21 +51,22 @@ public class ProductResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDTO> findById(@PathVariable Long id)
+    public ResponseEntity<Product> findById(@PathVariable Long id)
     {
-        ProductDTO productDTO = null;
+        Product product = null;
         try {
-            var exists = productService.getById(id);
+           /* var exists = productService.getById(id);
             if (exists != null) {
-                productDTO = new ProductDTO(
+                product = new Product(
                         exists.getId(),
                         exists.getName(),
                         exists.getDescription(),
                         exists.getPrice(),
                         exists.getImgUrl()
                 );
-                productDTO.setCategory(exists.getCategory());
-            }
+                product.setCategory(exists.getCategory());
+            }*/
+            product = productService.getById(id);
 
         }
         catch (Exception ex) {
@@ -72,7 +74,7 @@ public class ProductResource {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        return ResponseEntity.ok().body(productDTO);
+        return ResponseEntity.ok().body(product);
     }
 
 }

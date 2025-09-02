@@ -1,5 +1,6 @@
 package com.mike.store.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -30,6 +31,9 @@ public class Product implements Serializable {
     @ManyToMany
     @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) // tabela intermedia
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.productId")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public Product() {
         super();
@@ -86,6 +90,19 @@ public class Product implements Serializable {
 
     public Set<Category> getCategory() {
         return categories;
+    }
+
+    public void setCategory(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        Set<Order> set = new HashSet<>();
+        for (OrderItem i : orderItems) {
+            set.add(i.getOrder());
+        }
+        return set;
     }
 
     @Override

@@ -2,11 +2,14 @@ package com.mike.store.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mike.store.services.ProductService;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -25,6 +28,9 @@ public class Order implements Serializable {
     @ManyToOne // JPA transfromar em chaves estrangeiras no Banco de dados, relacionamneto entre Order e User
     @JoinColumn(name = "client_id")
     private User client;
+
+    @OneToMany(mappedBy = "id.orderId")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order() {
     }
@@ -64,6 +70,15 @@ public class Order implements Serializable {
         this.client = user;
     }
 
+    @JsonIgnore
+    public Set<Product> getProducts() {
+        Set<Product> set = new HashSet<>();
+        for (OrderItem i : orderItems) {
+            set.add(i.getProduct());
+        }
+        return set;
+    }
+
     public void setOrderStatus(OrderStatus orderStatus) {
         if (orderStatus != null) {
             this.status = orderStatus.getValue();
@@ -72,13 +87,14 @@ public class Order implements Serializable {
     }
 
 
-
-
-
     // mEthods
 
     public double total() {
-        return 0.0;
+        double total = 0;
+        for (OrderItem i : orderItems) {
+            total += i.subTotal();
+        }
+        return total;
     }
 
 

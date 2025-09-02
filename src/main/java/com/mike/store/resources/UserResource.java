@@ -26,18 +26,19 @@ public class UserResource {
 
     // GET
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
-        UserDTO randomUser = null;
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        User randomUser = null;
         try {
             var exists = userService.getById(id);
-            if (exists != null) {
+           /* if (exists != null) {
                 randomUser = new UserDTO(
                         exists.getId(),
                         exists.getName(),
                         exists.getEmail(),
                         exists.getPhone()
                 );
-            }
+            }*/
+            randomUser = exists;
 
         }
         catch (Exception ex) {
@@ -49,20 +50,21 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
 
-        var randomUsers = new ArrayList<UserDTO>();
+        var randomUsers = new ArrayList<User>();
 
         try {
             List<User> users = userService.getAll();
-            users.forEach(user -> randomUsers.add(
+            /*users.forEach(user -> randomUsers.add(
                     new UserDTO(
                             user.getId(),
                             user.getName(),
                             user.getEmail(),
                             user.getPhone()
                     )
-            ));
+            ));*/
+            randomUsers.addAll(users);
         }
         catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -74,17 +76,18 @@ public class UserResource {
 
     // POST
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
-            var randomUser = new UserDTO(
+            /*var randomUser = new UserDTO(
                     user.getId(),
                     user.getName(),
                     user.getEmail(),
                     user.getPhone()
             );
-            userService.insert(user);
+            userService.insert(user);*/
+            var u = userService.insert(user);
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-            return ResponseEntity.created(uri).body(randomUser);
+            return ResponseEntity.created(uri).body(u);
 
         }
         catch (Exception ex) {
@@ -95,19 +98,20 @@ public class UserResource {
 
     // PUT
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> putUser(@PathVariable Long id, @RequestBody User user) {
-        UserDTO randomUser = null;
+    public ResponseEntity<User> putUser(@PathVariable Long id, @RequestBody User user) {
+        User randomUser = null;
 
         try {
             var exists = userService.update(id, user);
-            if (exists != null) {
+           /* if (exists != null) {
                 randomUser = new UserDTO(
                         exists.getId(),
                         exists.getName(),
                         exists.getEmail(),
                         exists.getPhone()
                 );
-            }
+            }*/
+            randomUser = exists;
         }
         catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -118,8 +122,8 @@ public class UserResource {
 
     // DELETE
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable Long id) {
-        UserDTO randomUser = null;
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+        User randomUser = null;
         try {
             var exists = userService.delete(id);
             return ResponseEntity.noContent().build();

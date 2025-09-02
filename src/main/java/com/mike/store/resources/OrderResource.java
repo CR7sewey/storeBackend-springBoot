@@ -24,12 +24,14 @@ public class OrderResource {
     private OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<OrderDTO>> getAll()
+    public ResponseEntity<List<Order>> getAll()
     {
         var randomOrders = new ArrayList<OrderDTO>();
-
+        //
+        var rO = new ArrayList<Order>();
         try {
             List<Order> orders = orderService.getAll();
+            rO.addAll(orders);
             System.out.println(orders);
             orders.forEach(order -> {
                     //System.out.println(OrderStatus.valueOf(order.getStatus().toString()));
@@ -53,18 +55,20 @@ public class OrderResource {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().body(randomOrders);
+        return ResponseEntity.ok().body(rO);
     }
 
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<OrderDTO> getById(@PathVariable Long id)
+    public ResponseEntity<Order> getById(@PathVariable Long id)
     {
-        OrderDTO randomOrders = null;
+        Order randomOrders = null;
 
         try {
 
             var exists = orderService.getById(id);
+            randomOrders = exists;
+            /*
             if (exists != null) {
                 randomOrders = new OrderDTO(
                         exists.getId(),
@@ -77,7 +81,7 @@ public class OrderResource {
                                 exists.getClient().getPhone()
                         )
                 );
-            }
+            }*/
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -88,9 +92,10 @@ public class OrderResource {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDTO> create(@RequestBody Order order)
+    public ResponseEntity<Order> create(@RequestBody Order order)
     {
         try {
+            /*
             var randomOrder = new OrderDTO(
                     order.getId(),
                     order.getMoment(),
@@ -101,10 +106,10 @@ public class OrderResource {
                             order.getClient().getEmail(),
                             order.getClient().getPhone()
                     )
-            );
+            );*/
             orderService.insert(order);
             URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(order.getId()).toUri();
-            return ResponseEntity.created(uri).body(randomOrder);
+            return ResponseEntity.created(uri).body(order);
 
         }
         catch (Exception ex) {
@@ -113,7 +118,7 @@ public class OrderResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<OrderDTO> update(@PathVariable Long id, @RequestBody Order order)
+    public ResponseEntity<Order> update(@PathVariable Long id, @RequestBody Order order)
     {
         OrderDTO randomOrder = null;
         try {
@@ -131,7 +136,7 @@ public class OrderResource {
                         )
                 );
             }
-            return  ResponseEntity.ok().body(randomOrder);
+            return  ResponseEntity.ok().body(order);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -140,7 +145,7 @@ public class OrderResource {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<OrderDTO> delete(@PathVariable Long id)
+    public ResponseEntity<Order> delete(@PathVariable Long id)
     {
         try {
             orderService.delete(id);
